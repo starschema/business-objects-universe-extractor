@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<bot-config>
+  <universe-name>eFashion2.unx</universe-name>
+  <universe-parent-folder></universe-parent-folder>
+  <local-universe-path>C:\Users\AMIT\.businessobjects\bimodeler_14\workspace\eFashion</local-universe-path>
+  <output-path>D:\Workarea\Work\BOToTableauConnector\Release\20Dec15\BOT_Node\UniverseMetdata</output-path>
+  <bo-server-login-info>
+    <server-ip>SERVER</server-ip>
+    <server-port>6400</server-port>
+    <user-name>Administrator</user-name>
+    <password>Secret12</password>
+    <user-type>1</user-type>
+    <authentication>secEnterprise</authentication>
+  </bo-server-login-info>
+</bot-config>
