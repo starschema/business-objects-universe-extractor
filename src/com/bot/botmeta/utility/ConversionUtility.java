@@ -10,13 +10,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 import com.google.gson.Gson;
 
 public class ConversionUtility {
 
-	private static Logger logger = Logger.getLogger(ConversionUtility.class);
+	private static Logger logger = LogManager.getLogger(ConversionUtility.class);
 
 	public static <T> T xmlToObject(String path, Class<T> classObj)
 			throws IOException, JAXBException, SAXException {

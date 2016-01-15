@@ -2,7 +2,8 @@ package com.bot.botmeta;
 
 import java.io.File;
 import javax.xml.bind.JAXBException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.xml.sax.SAXException;
 import com.bot.botmeta.boextraction.ExtractBOBJMetaData;
 import com.bot.botmeta.bosemantic.configuration.BotConfig;
@@ -16,12 +17,10 @@ public class BOMetaDataExtraction
 
 	public static void main(String args[])
 	{
-		System.out.println("Business Object Univserse Extraction Started");
+		System.out.println("Business Object Universe Extraction Started");
 
-		String logFileName = PropertyLoader.getProperty("log_file_path") + "/BOTUniverseExtraction.log";
-		System.setProperty("logFile.log", logFileName);
 		BOMetaDataExtraction boExtraction = new BOMetaDataExtraction();
-		boExtraction.log = Logger.getLogger(BOMetaDataExtraction.class);
+		boExtraction.log = LogManager.getLogger();
 
 		try
 		{
@@ -39,24 +38,21 @@ public class BOMetaDataExtraction
 			boExtraction.log.error("**Exception in Main -> " + e);
 			boExtraction.log.error(e.getMessage(), e);
 			System.out.println("Error In Univserse Extraction");
-		}
+		} 
 	}
 
 	private void initialize(String[] args) throws SAXException
 	{
-		if (args.length == 0)
+		String configFile = "BOTConfig.xml";
+		if (args.length != 0)
 		{
-
-			System.out.println("Please provide the BOT Config Input XML file.");
-			return;
+			configFile = args[0];
+			System.out.println("Using provided config file");
 		}
-
-		String xmlString = args[0];
-
+		
 		try
 		{
-
-			botConfig = ConversionUtility.xmlToObject(xmlString, BotConfig.class);
+			botConfig = ConversionUtility.xmlToObject(configFile, BotConfig.class);
 
 		} catch (JAXBException e)
 		{

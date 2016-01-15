@@ -3,8 +3,6 @@ package com.bot.botmeta;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-
 public class PropertyLoader 
 {
 	  static Properties properties;

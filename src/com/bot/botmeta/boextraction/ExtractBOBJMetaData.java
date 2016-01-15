@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import com.bot.botmeta.BOMetaDataExtraction;
 import com.bot.botmeta.bosemantic.semanticstructure.BOFolder;
 import com.bot.botmeta.bosemantic.semanticstructure.BOMetaObjects;
@@ -54,7 +55,7 @@ public class ExtractBOBJMetaData {
 	List<Object> _listFilters;
 
 	public static RelationalBusinessLayer businessLayer;
-	static Logger log = Logger.getLogger(ExtractBOBJMetaData.class);
+	static Logger log = LogManager.getLogger(ExtractBOBJMetaData.class);
 
 	public static Map<String, String> dbConnectionMap = new HashMap<String, String>();
 	public static List<String> tablesList = new ArrayList<String>();
