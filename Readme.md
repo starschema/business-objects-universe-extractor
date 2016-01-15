@@ -10,6 +10,9 @@ This Java application can extract the universe metadata into a json file from SA
   		* Download the [Log4j2](http://logging.apache.org/log4j/2.x/) library and put the jar file in the `lib/` folder.
   		* Download the [Gson](http://search.maven.org/#artifactdetails%7Ccom.google.code.gson%7Cgson%7C2.5%7Cjar) library and put the jar file in the `lib/` folder.
 
+### Configuring the application###
+	The application is configurable through an external XML file. For the detailed explanation of the structure of the config see the `BOT_Configuration.docx` document and the default configuration file in the repository. At default the application uses the `BOTConfig.xml` file from the same folder where the script is placed into. If you wish to use an other configuration file set the `CONFIG_FILE` environmental variable to contain the path of it. The java application will receive the path as a command line argument.
+	
 ### Running the application ###
 	Starting the application is very easy using the `BOMetadataExtraction.bat` file. You only need the set two environmental variables:
 		* `JAVA_HOME` Set the path of your installed JDK for example: `SET JAVA_HOME=C:\Program Files (x86)\Java\jdk1.8.0_65`

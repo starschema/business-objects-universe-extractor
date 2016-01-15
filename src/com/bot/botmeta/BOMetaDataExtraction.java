@@ -44,10 +44,12 @@ public class BOMetaDataExtraction
 	private void initialize(String[] args) throws SAXException
 	{
 		String configFile = "BOTConfig.xml";
-		if (args.length != 0)
+		if (args.length != 0 && !args[0].equals(""))
 		{
 			configFile = args[0];
-			System.out.println("Using provided config file");
+			log.info("Using provided config file: " + configFile);
+		} else {
+			log.info("Using default config file: " + configFile);
 		}
 		
 		try

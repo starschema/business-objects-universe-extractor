@@ -15,4 +15,4 @@ md "build\classes"
 
 %_RUNJAVAC% -cp "%CLASSES%" -sourcepath src -d build\classes src\com\bot\botmeta\BOMetaDataExtraction.java
 
-%_RUNJAVA% -Dbusinessobjects.connectivity.directory="%BO_HOME%\dataAccess\connectionServer"  -Dlog4j.configurationFile="%CURRENT_DIR%\resources\log4j2.xml" -cp "%CLASSES%;build\classes" com.bot.botmeta.BOMetaDataExtraction
+%_RUNJAVA% -Dbusinessobjects.connectivity.directory="%BO_HOME%\dataAccess\connectionServer"  -Dlog4j.configurationFile="%CURRENT_DIR%\resources\log4j2.xml" -cp "%CLASSES%;build\classes" com.bot.botmeta.BOMetaDataExtraction %CONFIG_FILE%
