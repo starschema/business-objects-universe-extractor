@@ -14,33 +14,25 @@ To run the application your system should satisfy the following requirements:
   installation process. This is not selected by default). An installation guide
   is available [here](http://scn.sap.com/community/businessobjects-web-intelligence/blog/2013/11/15/bo-client-installation-and-configuration).
 
-A fairly recent version of both `Log4j2` and `Gson` jar files is in the `lib/` folder. If you would like to upgrade them to a newer version:
+* Install [Apache Maven binary](https://maven.apache.org/download.cgi). More info about how to install Maven can be found [here](https://maven.apache.org/install.html).
+  
+  
+You can test the installations by running *mvn -version* from the command line. 
+It should list the Maven version and the Java version too.
 
-* Download the [Log4j2](http://logging.apache.org/log4j/2.x/) library and put the jar file in the `lib/` folder.
+### Configuring the application ###
 
-* Download the [Gson](http://search.maven.org/#artifactdetails%7Ccom.google.code.gson%7Cgson%7C2.5%7Cjar)
-  library and put the jar file in the `lib/` folder.
-
-### Configuring the application###
-
-The application is configurable through an external XML file. For the detailed
-explanation of the structure of the config see the `BOT_Configuration.docx`
-document and the default configuration file in the repository. At default the
-application uses the `BOTConfig.xml` file from the same folder where the script
-is placed into. If you wish to use an other configuration file set the
-`CONFIG_FILE` environmental variable to contain the path of it. The java
-application will receive the path as a command line argument.
+The application is configurable through a XML file: [src/main/resources/BOTConfig.xml](src/main/resources/BOTConfig.xml). 
+For the detailed explanation of the structure of the config see the `BOT_Configuration.docx` document.
 
 ### Running the application ###
 
-Starting the application is very easy using the `BOMetadataExtraction.bat`
-file. You only need the set two environmental variables:
-
-* `JAVA_HOME` Set the path of your installed JDK for example: `SET JAVA_HOME=C:\Program Files (x86)\Java\jdk1.7.0_80`
+Starting the application is very easy using the `BOMetadataExtraction.bat` file. 
+You only need the set one environmental variable:
 
 * `BO_HOME` Set the path of your installed BO Client library for example: `SET BO_HOME=C:\Program Files (x86)\SAP BusinessObjects\SAP BusinessObjects Enterprise XI 4.0`
 
-After setting the variables you only start the `BOMetadataExtraction.bat` file.
+After setting the variable you only start the `BOMetadataExtraction.bat` file.
 The result will be available in the same folder where the script was running
 from.
 
