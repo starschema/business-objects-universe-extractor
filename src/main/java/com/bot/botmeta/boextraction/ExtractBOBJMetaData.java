@@ -25,6 +25,7 @@ import com.sap.sl.sdk.authoring.businesslayer.Measure;
 import com.sap.sl.sdk.authoring.businesslayer.NativeRelationalFilter;
 import com.sap.sl.sdk.authoring.businesslayer.RelationalBusinessLayer;
 import com.sap.sl.sdk.authoring.businesslayer.RootFolder;
+import com.sap.sl.sdk.authoring.businesslayer.internal.emf.impl.FilterImpl;
 import com.sap.sl.sdk.authoring.cms.CmsResourceService;
 import com.sap.sl.sdk.authoring.cms.DataFederatorService;
 import com.sap.sl.sdk.authoring.datafoundation.DataFoundation;
@@ -183,7 +184,7 @@ public class ExtractBOBJMetaData {
 
 				// Extracting Filters
 				if (blItem instanceof Filter) {
-					NativeRelationalFilter filter = (NativeRelationalFilter) blItem;
+					FilterImpl filter = (FilterImpl) blItem;
 					listFilter.add(filter);
 				}
 
@@ -206,8 +207,7 @@ public class ExtractBOBJMetaData {
 					+ "/"
 					+ BOMetaDataExtraction.botConfig.getUniverseExportFolder()
 					+ "/"
-					+ BOMetaDataExtraction.botConfig.getUniverseName().replace(
-							" ", "_");
+					+ BOMetaDataExtraction.botConfig.getUniverseName();
 
 			
 			retrieveUniverse = _cmsResourceService.retrieveUniverse(
@@ -405,7 +405,7 @@ public class ExtractBOBJMetaData {
 				if (boFilters == null)
 					boFilters = new ArrayList<com.bot.botmeta.bosemantic.semanticstructure.Filter>();
 				for (Object object : filters) {
-					NativeRelationalFilter filter = (NativeRelationalFilter) object;
+					FilterImpl filter = (FilterImpl) object;
 					String parentName = "";
 					BlContainer parent = filter.getParent();
 					if (parent != null)
@@ -488,7 +488,7 @@ public class ExtractBOBJMetaData {
 	}
 
 	private com.bot.botmeta.bosemantic.semanticstructure.Filter extractFilter(
-			NativeRelationalFilter filter) {
+			FilterImpl filter) {
 		com.bot.botmeta.bosemantic.semanticstructure.Filter boFilter = new com.bot.botmeta.bosemantic.semanticstructure.Filter();
 		// RelationalBinding relationalBinding = (RelationalBinding)
 		// filter.getBinding();
