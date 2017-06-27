@@ -1,9 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <bot-config>
+  <!-- 
+  		The name of the universe which we want to extract. 
+  		The file must has an extension of .unx .
+  -->
   <universe-name>eFashion2.unx</universe-name>
+  <!-- 
+  		The path where the universe is without the "Universes" folder.
+  			For example you have a universe like: "Universes/example/path/universe.unx"  
+  			Then the universe-parent-folder should be "example/path".
+  			
+  			If the universe is in the "Universes" folder, then the universe-parent-folder 
+  			should be empty.
+  -->
   <universe-parent-folder></universe-parent-folder>
+  <!--  
+  		The targeted folder path within which the resources are created.
+  		This should be any empty folder anywhere on your computer.
+  			For example you created an empty folder like "C:\localUniverses".
+  			Then the local-universe path should look like this:
+  			<local-universe-path>C:\localUniverses</local-universe-path>
+   -->
   <local-universe-path>C:\Users\AMIT\.businessobjects\bimodeler_14\workspace\eFashion</local-universe-path>
+   <!--  
+  		The folder where the JSON files should be saved.
+  		This should be any empty folder anywhere on your computer.
+  			For example you created an empty folder like "C:\UniverseMetdata".
+  			Then the output path should look like this:
+  			<output-path>C:\UniverseMetdata</output-path>
+   -->
   <output-path>D:\Workarea\Work\BOToTableauConnector\Release\20Dec15\BOT_Node\UniverseMetdata</output-path>
+  <!-- 
+  		The bo-server-login-info includes all the authentication data to the BO server.
+  		The user-type and the authentication field is not mandatory.
+   -->
   <bo-server-login-info>
     <server-ip>SERVER</server-ip>
     <server-port>6400</server-port>

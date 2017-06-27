@@ -23,7 +23,7 @@ It should list the Maven version and the Java version too.
 ### Configuring the application ###
 
 The application is configurable through a XML file: [src/main/resources/BOTConfig.xml](src/main/resources/BOTConfig.xml). 
-For the detailed explanation of the structure of the config see the `BOT_Configuration.docx` document.
+For the more details please check the [config file](src/main/resources/BOTConfig.xml).
 
 ### Running the application ###
 
