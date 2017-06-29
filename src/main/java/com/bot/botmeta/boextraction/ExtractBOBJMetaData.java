@@ -1,5 +1,6 @@
 package com.bot.botmeta.boextraction;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -104,13 +105,10 @@ public class ExtractBOBJMetaData {
 
 
 		} catch (SDKException e) {
-			log.error("SDK Exception in intialization" + e);
-			log.error(e.getMessage(), e);
+			log.error("ERROR: SDK Exception in intialization: " + e.getMessage());
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			log.error("Exception in intialization" + e);
-			log.error(e.getMessage(), e);
+			log.error("ERROR: Exception in intialization: " + e.getMessage());
 		}
 		return metadataObjects;
 	}
@@ -221,9 +219,20 @@ public class ExtractBOBJMetaData {
 			
 			
 		} catch (Exception e) {			
-			log.error("Exception in retrieving Universe" + e);
-			log.error(e.getMessage(), e);
-			e.printStackTrace();
+			log.error("ERROR: Exception in retrieving Universe" + e.getMessage());
+			if(e.getMessage().contains("SLS 10003")){
+				List<String> universes = getAllUniverses();
+				if(universes == null || universes.isEmpty()){
+					log.error("The are no universes in the repository!");
+				}else{
+					StringBuilder builder = new StringBuilder();
+					for(String universe : universes){
+						builder.append(universe);
+						builder.append("\n  ");
+					}
+					log.error("\nThe existing universes in the repository:\n  " + builder.toString());
+				}
+			}
 		}
 
 		businessLayer = (RelationalBusinessLayer) _localResourceService
@@ -508,21 +517,26 @@ public class ExtractBOBJMetaData {
 		return boFilter;
 	}
 	
-	public List<String> getAllUniverses() throws SDKException{
-		List<String> universes = new ArrayList<>();
-		IInfoStore infoStore = (IInfoStore) enterpriseSession.getService("InfoStore");
-		String queryString = "SELECT * FROM CI_APPOBJECTS WHERE SI_KIND = 'DSL.MetaDataFile'";
-
-		IInfoObjects infoObjects = infoStore.query(queryString);
-		
-		Iterator<?> infoObjectsIter = infoObjects.iterator();
-		while(infoObjectsIter.hasNext()) {
-			DSLUniverse universe = (DSLUniverse) infoObjectsIter.next();
-			String path = getPath(universe);
-			universes.add(path.isEmpty() ? universe.getTitle() : (path + "\\" + universe.getTitle()));
+	public List<String> getAllUniverses(){
+		try{
+			List<String> universes = new ArrayList<>();
+			IInfoStore infoStore = (IInfoStore) enterpriseSession.getService("InfoStore");
+			String queryString = "SELECT * FROM CI_APPOBJECTS WHERE SI_KIND = 'DSL.MetaDataFile'";
+	
+			IInfoObjects infoObjects = infoStore.query(queryString);
+			
+			Iterator<?> infoObjectsIter = infoObjects.iterator();
+			while(infoObjectsIter.hasNext()) {
+				DSLUniverse universe = (DSLUniverse) infoObjectsIter.next();
+				String path = getPath(universe);
+				universes.add(path.isEmpty() ? universe.getTitle() : (path + File.separator + universe.getTitle()));
+			}
+			
+			return universes;
+		}catch(SDKException e){
+			log.error("ERROR: Could not get all the universes: " + e.getMessage());
+			return null;
 		}
-		
-		return universes;
 	}
 	
 	private String getPath(IInfoObject folder) throws SDKException {
@@ -532,7 +546,7 @@ public class ExtractBOBJMetaData {
 			if(path.isEmpty()){
 				return folder.getParent().getTitle();
 			}
-			return path + "\\" + folder.getParent().getTitle();
+			return path + File.separator + folder.getParent().getTitle();
 		}
 		return "";
 	}
