@@ -1,18 +1,26 @@
 package com.bot.botmeta.boextraction;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.apache.logging.log4j.Logger;
+
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.bot.botmeta.BOMetaDataExtraction;
 import com.bot.botmeta.bosemantic.semanticstructure.BOFolder;
 import com.bot.botmeta.bosemantic.semanticstructure.BOMetaObjects;
 import com.bot.botmeta.bosemantic.semanticstructure.Folders;
+import com.businessobjects.mds.sdk.plugin.desktop.SLMetaDataInfoObject.internal.DSLUniverse;
 import com.crystaldecisions.sdk.exception.SDKException;
 import com.crystaldecisions.sdk.framework.CrystalEnterprise;
 import com.crystaldecisions.sdk.framework.IEnterpriseSession;
+import com.crystaldecisions.sdk.occa.infostore.IInfoObject;
+import com.crystaldecisions.sdk.occa.infostore.IInfoObjects;
+import com.crystaldecisions.sdk.occa.infostore.IInfoStore;
 import com.sap.sl.sdk.authoring.businesslayer.Attribute;
 import com.sap.sl.sdk.authoring.businesslayer.BlContainer;
 import com.sap.sl.sdk.authoring.businesslayer.BlItem;
@@ -22,7 +30,6 @@ import com.sap.sl.sdk.authoring.businesslayer.Filter;
 import com.sap.sl.sdk.authoring.businesslayer.Folder;
 import com.sap.sl.sdk.authoring.businesslayer.ItemState;
 import com.sap.sl.sdk.authoring.businesslayer.Measure;
-import com.sap.sl.sdk.authoring.businesslayer.NativeRelationalFilter;
 import com.sap.sl.sdk.authoring.businesslayer.RelationalBusinessLayer;
 import com.sap.sl.sdk.authoring.businesslayer.RootFolder;
 import com.sap.sl.sdk.authoring.businesslayer.internal.emf.impl.FilterImpl;
@@ -98,13 +105,10 @@ public class ExtractBOBJMetaData {
 
 
 		} catch (SDKException e) {
-			log.error("SDK Exception in intialization" + e);
-			log.error(e.getMessage(), e);
+			log.error("ERROR: SDK Exception in intialization: " + e.getMessage());
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			log.error("Exception in intialization" + e);
-			log.error(e.getMessage(), e);
+			log.error("ERROR: Exception in intialization: " + e.getMessage());
 		}
 		return metadataObjects;
 	}
@@ -215,9 +219,20 @@ public class ExtractBOBJMetaData {
 			
 			
 		} catch (Exception e) {			
-			log.error("Exception in retrieving Universe" + e);
-			log.error(e.getMessage(), e);
-			e.printStackTrace();
+			log.error("ERROR: Exception in retrieving Universe" + e.getMessage());
+			if(e.getMessage().contains("SLS 10003")){
+				List<String> universes = getAllUniverses();
+				if(universes == null || universes.isEmpty()){
+					log.error("The are no universes in the repository!");
+				}else{
+					StringBuilder builder = new StringBuilder();
+					for(String universe : universes){
+						builder.append(universe);
+						builder.append("\n  ");
+					}
+					log.error("\nThe existing universes in the repository:\n  " + builder.toString());
+				}
+			}
 		}
 
 		businessLayer = (RelationalBusinessLayer) _localResourceService
@@ -500,6 +515,40 @@ public class ExtractBOBJMetaData {
 		boFilter.setName(attributeName);
 		boFilter.setId(filter.getIdentifier());
 		return boFilter;
+	}
+	
+	public List<String> getAllUniverses(){
+		try{
+			List<String> universes = new ArrayList<>();
+			IInfoStore infoStore = (IInfoStore) enterpriseSession.getService("InfoStore");
+			String queryString = "SELECT * FROM CI_APPOBJECTS WHERE SI_KIND = 'DSL.MetaDataFile'";
+	
+			IInfoObjects infoObjects = infoStore.query(queryString);
+			
+			Iterator<?> infoObjectsIter = infoObjects.iterator();
+			while(infoObjectsIter.hasNext()) {
+				DSLUniverse universe = (DSLUniverse) infoObjectsIter.next();
+				String path = getPath(universe);
+				universes.add(path.isEmpty() ? universe.getTitle() : (path + File.separator + universe.getTitle()));
+			}
+			
+			return universes;
+		}catch(SDKException e){
+			log.error("ERROR: Could not get all the universes: " + e.getMessage());
+			return null;
+		}
+	}
+	
+	private String getPath(IInfoObject folder) throws SDKException {
+		if(folder.getParent() instanceof com.crystaldecisions.sdk.plugin.desktop.folder.internal.Folder 
+				&& !"Universes".equals(folder.getParent().getTitle())){
+			String path = getPath(folder.getParent());
+			if(path.isEmpty()){
+				return folder.getParent().getTitle();
+			}
+			return path + File.separator + folder.getParent().getTitle();
+		}
+		return "";
 	}
 
 }
